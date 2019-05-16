@@ -2,6 +2,10 @@ import os
 import sqlite3
 from bs4 import BeautifulSoup
 from nltk import word_tokenize, FreqDist
+from stopwords import stop_words_slovene
+
+
+wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']
 
 # build list of documents
 rootDirectory = 'data'
@@ -14,10 +18,14 @@ for root, dirs, files in os.walk(rootDirectory):
         # print(relativeRoot)
         relativePath = os.path.join(rootDirectory, relativeRoot, file)
         # print(relativePath)
-        documentList.add(relativePath)
+        if('DS_Store' not in relativePath):
+            documentList.add(relativePath)
 
+#sort by domain name & page number
+documentList = sorted(documentList, key=lambda x: (x.split('.')[0], int(x.split('.')[-2])))
 # processing documents
 for file in documentList:
+
     print(file, end="\t")
     soup = BeautifulSoup(open(file, 'rb'), 'html.parser')
     body = soup.find('body')
@@ -25,12 +33,16 @@ for file in documentList:
 
     word_tokens = word_tokenize(htmlText)
     word_tokens = [token.lower() for token in word_tokens]
-    print('word tokens: ' + str(len(word_tokens)))
+
+    # removing stop words and wild chars
+    filtered_text = [w for w in word_tokens if w not in stop_words_slovene and w not in wildChars]
+
+    print('word tokens: ' + str(len(filtered_text)))
 
     try:
         documentID = file.split('\\')[2]
         # print(documentID)
-        wordFrequency = FreqDist(word_tokens)
+        wordFrequency = FreqDist(filtered_text)
         # print(wordFrequency.keys())
         # for key in wordFrequency:
         #     print(str(key) + ': ' + str(wordFrequency[key]))
