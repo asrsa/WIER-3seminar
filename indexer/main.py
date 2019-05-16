@@ -1,8 +1,10 @@
 import os
 import sqlite3
+import re
 from bs4 import BeautifulSoup
 from nltk import word_tokenize, FreqDist
 from stopwords import stop_words_slovene
+
 
 
 wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']
@@ -70,10 +72,13 @@ for file in documentList:
             cur.execute(sql, (word,))
             con.commit()
 
+
+            indexes = [m.start() for m in re.finditer('\\b' + word + '\\b', htmlText, flags=re.IGNORECASE)]
+
             # insert into posting
             sql = """INSERT into Posting(word, documentName, frequency, indexes)
                      VALUES (?,?,?,?)"""
-            cur.execute(sql, (word, documentID, wordFrequency[word], 'OH NO, INDEXES MUST BE OBTAINED SOMEHOW'))
+            cur.execute(sql, (word, documentID, wordFrequency[word], ','.join(str(v) for v in indexes)))
             con.commit()
         cur.close()
     except Exception as e:
