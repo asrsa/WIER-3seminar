@@ -84,5 +84,3 @@ for file in documentList:
     except Exception as e:
         print('Fuck, sth went wrong!')
         print(e)
-
-    break
