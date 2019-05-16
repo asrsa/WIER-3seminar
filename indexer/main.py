@@ -29,7 +29,12 @@ for file in documentList:
     print(file, end="\t")
     soup = BeautifulSoup(open(file, 'rb'), 'html.parser')
     body = soup.find('body')
-    htmlText = body.get_text()
+
+    # remove javascript stuff
+    for script in body(['script', 'style']):
+        script.decompose()
+
+    htmlText = body.get_text(separator=' ')
 
     word_tokens = word_tokenize(htmlText)
     word_tokens = [token.lower() for token in word_tokens]
@@ -74,3 +79,5 @@ for file in documentList:
     except Exception as e:
         print('Fuck, sth went wrong!')
         print(e)
+
+    break

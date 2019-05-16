@@ -10,7 +10,16 @@ example_text = "»Program projektov eProstor« (en prostor za vse) ima specifič
 
 soup = BeautifulSoup(open('data/e-prostor.gov.si/e-prostor.gov.si.1.html', 'rb'), 'html.parser')
 body = soup.find('body')
-htmlText = body.get_text()
+
+
+#remove javascript stuff
+for script in body(['script', 'style']):
+    script.decompose()
+
+
+htmlText = body.get_text(separator=' ')
+
+
 
 word_tokens = word_tokenize(htmlText)
 word_tokens = [token.lower() for token in word_tokens]
