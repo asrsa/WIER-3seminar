@@ -4,7 +4,7 @@ import re
 from bs4 import BeautifulSoup
 from nltk import word_tokenize, FreqDist
 from stopwords import stop_words_slovene
-
+from Document import Document
 
 
 wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']
@@ -44,12 +44,13 @@ for file in documentList:
     # removing stop words and wild chars
     filtered_text = [w for w in word_tokens if w not in stop_words_slovene and w not in wildChars]
 
-    print('word tokens: ' + str(len(filtered_text)))
-
     try:
         documentID = file.split('\\')[2]
         # print(documentID)
         wordFrequency = FreqDist(filtered_text)
+
+        print('Unique word tokens: ' + str(len(wordFrequency)))
+
         # print(wordFrequency.keys())
         # for key in wordFrequency:
         #     print(str(key) + ': ' + str(wordFrequency[key]))
@@ -75,12 +76,13 @@ for file in documentList:
 
             indexes = [m.start() for m in re.finditer('\\b' + word + '\\b', htmlText, flags=re.IGNORECASE)]
 
+
             # insert into posting
             sql = """INSERT into Posting(word, documentName, frequency, indexes)
                      VALUES (?,?,?,?)"""
             cur.execute(sql, (word, documentID, wordFrequency[word], ','.join(str(v) for v in indexes)))
             con.commit()
+
         cur.close()
     except Exception as e:
-        print('Fuck, sth went wrong!')
         print(e)

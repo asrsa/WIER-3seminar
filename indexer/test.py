@@ -2,6 +2,11 @@ from nltk.tokenize import word_tokenize
 from stopwords import stop_words_slovene
 from bs4 import BeautifulSoup
 import sqlite3
+from Document import Document
+
+
+tmp = Document('data\e-prostor.gov.si\e-prostor.gov.si.1.html')
+tmp.getSnippet(9456)
 
 
 wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']
