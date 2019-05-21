@@ -21,10 +21,10 @@ class Document:
         preText = self.htmlText[: index]
         preSplit = preText.split()
 
-        result = '... '
+        result = '... ' if len(preSplit) > 2 else ''
         result += ' '.join(word for word in preSplit[-3:])
         result += ' ' + split[0] + ' '
         result += ' '.join(word for word in split[1:4])
-        result += ' ...'
+        result += ' ...' if len(split) > 2 else ''
 
         print(result)

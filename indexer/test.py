@@ -6,7 +6,7 @@ from Document import Document
 
 
 tmp = Document('data\e-prostor.gov.si\e-prostor.gov.si.1.html')
-tmp.getSnippet(9456)
+tmp.getSnippet(9)
 
 
 wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']
