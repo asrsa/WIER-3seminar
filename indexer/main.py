@@ -25,6 +25,7 @@ for root, dirs, files in os.walk(rootDirectory):
 
 #sort by domain name & page number
 documentList = sorted(documentList, key=lambda x: (x.split('.')[0], int(x.split('.')[-2])))
+
 # processing documents
 for file in documentList:
 
@@ -34,6 +35,9 @@ for file in documentList:
 
     # remove javascript stuff
     for script in body(['script', 'style']):
+        script.decompose()
+
+    for script in body(['noscript', 'style']):
         script.decompose()
 
     htmlText = body.get_text(separator=' ')
