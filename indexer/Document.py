@@ -1,5 +1,10 @@
 from bs4 import BeautifulSoup
+import re
 
+# select sum(frequency) as 'frequencies', documentName,  group_concat(indexes) from Posting
+# where word like 'sistem' or word like 'spot'
+# group by documentName
+# order by frequencies DESC
 
 class Document:
     def __init__(self, fileName):
@@ -12,6 +17,9 @@ class Document:
         for script in body(['script', 'style']):
             script.decompose()
 
+        for script in body(['noscript', 'style']):
+            script.decompose()
+
         self.htmlText = body.get_text(separator=' ')
 
     def getSnippet(self, index):
@@ -21,10 +29,10 @@ class Document:
         preText = self.htmlText[: index]
         preSplit = preText.split()
 
-        result = '... ' if len(preSplit) > 2 else ''
-        result += ' '.join(word for word in preSplit[-3:])
-        result += ' ' + split[0] + ' '
-        result += ' '.join(word for word in split[1:4])
-        result += ' ...' if len(split) > 2 else ''
+        snippet = '... ' if len(preSplit) > 2 else ''
+        snippet += ' '.join(word for word in preSplit[-3:])
+        snippet += ' ' + split[0] + ' '
+        snippet += ' '.join(word for word in split[1:4])
+        snippet += ' ...' if len(split) > 2 else ''
 
-        print(result)
+        return snippet
