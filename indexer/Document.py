@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import re
 
 # select sum(frequency) as 'frequencies', documentName,  group_concat(indexes) from Posting
 # where word like 'sistem' or word like 'spot'
@@ -22,7 +21,7 @@ class Document:
 
         self.htmlText = body.get_text(separator=' ')
 
-    def getSnippet(self, index):
+    def getSnippet(self, index, highlight):
         text = self.htmlText[index:]
         split = text.split()
 
@@ -31,7 +30,11 @@ class Document:
 
         snippet = '... ' if len(preSplit) > 2 else ''
         snippet += ' '.join(word for word in preSplit[-3:])
+
+        snippet += '\033[92m' if highlight else ''
         snippet += ' ' + split[0] + ' '
+        snippet += '\033[0m' if highlight else ''
+
         snippet += ' '.join(word for word in split[1:4])
         snippet += ' ...' if len(split) > 2 else ''
 
