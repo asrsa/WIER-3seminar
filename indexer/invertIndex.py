@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import re
+
 from bs4 import BeautifulSoup
 from nltk import word_tokenize, FreqDist
 from stopwords import stop_words_slovene
@@ -63,12 +64,6 @@ for file in documentList:
         cur = con.cursor()
 
         for word in wordFrequency:
-            # this should go somewhere in this part here
-            # indices = [i for i, x in enumerate(my_list) if x == word]
-
-            # and this?
-            # [m.start() for m in re.finditer('test', 'test test test test')]
-            # #[0, 5, 10, 15]
 
             # insert into IndexWord
             # added 'IGNORE' to avoid 'UNIQUE constraint failed: IndexWord.word' error
@@ -77,7 +72,7 @@ for file in documentList:
             con.commit()
 
 
-            indexes = [m.start() for m in re.finditer('\\b' + word + '\\b', htmlText, flags=re.IGNORECASE)]
+            indexes = [m.start() for m in re.finditer(r"\W%s\W" % word, htmlText, flags=re.IGNORECASE)]
 
 
             # insert into posting

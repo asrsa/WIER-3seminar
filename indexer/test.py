@@ -5,8 +5,9 @@ import sqlite3
 from Document import Document
 
 
-tmp = Document('e-prostor.gov.si.5.html')
-print(tmp.getSnippet(55, True))
+tmp = Document('evem.gov.si.371.html')
+tmp.findWord('dejavnosti')
+print(tmp.getSnippet(983586, True))
 
 
 wildChars = ['(','[','{','}',']',')',';','`', '``', ':', "''", ',','.']

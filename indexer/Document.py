@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import re
 
 class Document:
     def __init__(self, fileName):
@@ -44,3 +45,8 @@ class Document:
         snippet += ' ...' if len(split) > 2 else ''
 
         return snippet
+
+    def findWord(self, word):
+        # indexes = [m.start() for m in re.finditer(r"[\"(\s]%s[\".!,;:?)\s«]" % word, self.htmlText, flags=re.IGNORECASE)]
+        indexes = [m.start() for m in re.finditer(r"\W%s\W" % word, self.htmlText, flags=re.IGNORECASE)]
+        return indexes
