@@ -1,15 +1,10 @@
 from bs4 import BeautifulSoup
 
-# select sum(frequency) as 'frequencies', documentName,  group_concat(indexes) from Posting
-# where word like 'sistem' or word like 'spot'
-# group by documentName
-# order by frequencies DESC
-
 class Document:
     def __init__(self, fileName):
-        self.fileName = fileName
+        self.path = self.getPath(fileName)
 
-        soup = BeautifulSoup(open(fileName, 'rb'), 'html.parser')
+        soup = BeautifulSoup(open(self.path, 'rb'), 'html.parser')
         body = soup.find('body')
 
         # remove javascript stuff
@@ -21,7 +16,17 @@ class Document:
 
         self.htmlText = body.get_text(separator=' ')
 
-    def getSnippet(self, index, highlight):
+    def getPath(self, fileName):
+        if 'e-prostor' in fileName:
+            return 'data\e-prostor.gov.si\\' + fileName
+        elif 'e-uprava' in fileName:
+            return 'data\e-uprava.gov.si\\' + fileName
+        elif 'evem' in fileName:
+            return 'data\evem.gov.si\\' + fileName
+        elif 'podatki' in fileName:
+            return 'data\podatki.gov.si\\' + fileName
+
+    def getSnippet(self, index, highlight=False):
         text = self.htmlText[index:]
         split = text.split()
 
