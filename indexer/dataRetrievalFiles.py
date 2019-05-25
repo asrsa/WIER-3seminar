@@ -89,7 +89,7 @@ try:
 
         # multiple hits in a document
         if len(docResults) > 0:
-            results.append([sum(x[0] for x in docResults), documentID, ' '.join(((x[2] for x in docResults[:5])))])
+            results.append([sum(x[0] for x in docResults), documentID, ' '.join(((x[2] for x in docResults)))])
 
 
 
