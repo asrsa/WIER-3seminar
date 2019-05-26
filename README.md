@@ -14,3 +14,7 @@ python indexer\dataRetrievalFiles.py
 
 # run document indexing
 python indexer\invertIndex.py
+
+# prequesites 
+- bs4
+- nltk (with slovenian stopwords)
